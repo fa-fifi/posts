@@ -1,4 +1,4 @@
-# api_integration
+# Posts
 
 A new Flutter project.
 

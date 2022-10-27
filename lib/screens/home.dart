@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:posts/screens/post.dart';
 import '../models/post.dart';
 import '../repositories/post.dart';
 
@@ -10,12 +11,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late Future<List<Post>> futurePost;
+  late Future<List<Post>> _future;
 
   @override
   void initState() {
     super.initState();
-    futurePost = PostRepository.fetchPosts();
+    _future = PostRepository.fetchPosts();
   }
 
   @override
@@ -26,12 +27,15 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Center(
         child: FutureBuilder<List<Post>>(
-          future: futurePost,
+          future: _future,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return ListView.builder(
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) => ListTile(
+                  onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) =>
+                          PostScreen(id: snapshot.data![index].id))),
                   title: Text(snapshot.data![index].title),
                   subtitle: Text(snapshot.data![index].body),
                 ),
