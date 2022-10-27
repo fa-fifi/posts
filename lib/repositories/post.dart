@@ -5,6 +5,9 @@ import 'dart:convert';
 
 class PostRepository {
   static const String url = 'https://jsonplaceholder.typicode.com';
+  static const Map<String, String> header = {
+    'Content-Type': 'application/json; charset=UTF-8',
+  };
 
   static Future<List<Post>> fetchPosts() async {
     final response = await http.get(Uri.parse('$url/posts'));
@@ -43,9 +46,7 @@ class PostRepository {
   static Future<Post> createPost(int userId, String title, String body) async {
     final response = await http.post(
       Uri.parse('$url/posts'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
+      headers: header,
       body: jsonEncode(
           <String, dynamic>{'userId': userId, 'title': title, 'body': body}),
     );
@@ -54,6 +55,33 @@ class PostRepository {
       return Post.fromJson(jsonDecode(response.body));
     } else {
       throw Exception('Failed to create post.');
+    }
+  }
+
+  static Future<Post> updatePost(int userId, String title, String body) async {
+    final uri = Uri.parse('$url/posts/$userId');
+    final jsonString = jsonEncode(<String, dynamic>{
+      'userId': userId,
+      if (title.isNotEmpty) 'title': title,
+      if (body.isNotEmpty) 'body': body
+    });
+
+    final response = title.isNotEmpty || body.isNotEmpty
+        ? await http.patch(
+            uri,
+            headers: header,
+            body: jsonString,
+          )
+        : await http.put(
+            uri,
+            headers: header,
+            body: jsonString,
+          );
+
+    if (response.statusCode == 200) {
+      return Post.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to update post.');
     }
   }
 }

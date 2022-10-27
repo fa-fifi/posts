@@ -49,6 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        tooltip: 'Create Post',
         onPressed: () => Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => const UploadScreen())),
         child: const Icon(Icons.add),

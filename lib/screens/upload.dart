@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:posts/models/post.dart';
-
 import '../repositories/post.dart';
 
 class UploadScreen extends StatefulWidget {

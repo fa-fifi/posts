@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:posts/models/comment.dart';
 import '../models/post.dart';
 import '../repositories/post.dart';
+import 'update.dart';
 
 class PostScreen extends StatefulWidget {
   final int id;
@@ -44,7 +45,6 @@ class _PostScreenState extends State<PostScreen> {
               } else if (snapshot.hasError) {
                 return Text('${snapshot.error}');
               }
-
               return const CircularProgressIndicator();
             },
           ),
@@ -71,6 +71,12 @@ class _PostScreenState extends State<PostScreen> {
             },
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        tooltip: 'Edit Post',
+        onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => UpdateScreen(id: widget.id))),
+        child: const Icon(Icons.edit),
       ),
     );
   }
