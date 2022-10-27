@@ -33,36 +33,50 @@ class _UpdateScreenState extends State<UpdateScreen> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasData) {
-              return Column(
-                children: [
-                  Text(snapshot.data!.title!),
-                  Text(snapshot.data!.body!),
-                  TextField(
-                    controller: _titleController,
-                    textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(hintText: 'Enter Title'),
-                  ),
-                  TextField(
-                    controller: _bodyController,
-                    textInputAction: TextInputAction.done,
-                    decoration: const InputDecoration(hintText: 'Enter Body'),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          _future = PostRepository.updatePost(
-                              snapshot.data!.userId!,
-                              snapshot.data!.id!,
-                              _titleController.text,
-                              _bodyController.text);
-                        });
-                      },
-                      child: const Text('Update Post'),
+              return Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  children: [
+                    Card(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(color: Theme.of(context).primaryColor),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: ListTile(
+                        title: Text(snapshot.data!.title!),
+                        subtitle: Text(snapshot.data!.body!),
+                      ),
                     ),
-                  ),
-                ],
+                    const Divider(),
+                    TextField(
+                      controller: _titleController,
+                      textInputAction: TextInputAction.next,
+                      decoration:
+                          const InputDecoration(hintText: 'Enter Title'),
+                    ),
+                    const Divider(),
+                    TextField(
+                      controller: _bodyController,
+                      textInputAction: TextInputAction.done,
+                      decoration: const InputDecoration(hintText: 'Enter Body'),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            _future = PostRepository.updatePost(
+                                snapshot.data!.userId!,
+                                snapshot.data!.id!,
+                                _titleController.text,
+                                _bodyController.text);
+                          });
+                        },
+                        child: const Text('Update Post'),
+                      ),
+                    ),
+                  ],
+                ),
               );
             } else if (snapshot.hasError) {
               return Text('${snapshot.error}');

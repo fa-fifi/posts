@@ -13,9 +13,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Posts',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        // useMaterial3: true,
-      ),
+          primarySwatch: Colors.blue,
+          useMaterial3: true,
+          inputDecorationTheme: InputDecorationTheme(
+            fillColor: Colors.grey.shade100,
+            filled: true,
+          )),
       home: const HomeScreen(),
     );
   }

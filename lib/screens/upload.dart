@@ -20,8 +20,8 @@ class _UploadScreenState extends State<UploadScreen> {
       appBar: AppBar(
         title: const Text('Create Post'),
       ),
-      body: Container(
-        padding: const EdgeInsets.all(8.0),
+      body: Padding(
+        padding: const EdgeInsets.all(10),
         child: (_futureAlbum == null) ? buildColumn() : buildFutureBuilder(),
       ),
     );
@@ -35,6 +35,7 @@ class _UploadScreenState extends State<UploadScreen> {
           textInputAction: TextInputAction.next,
           decoration: const InputDecoration(hintText: 'Enter Title'),
         ),
+        const Divider(),
         TextField(
           controller: _bodyController,
           textInputAction: TextInputAction.done,
@@ -61,9 +62,15 @@ class _UploadScreenState extends State<UploadScreen> {
       future: _futureAlbum,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return ListTile(
-            title: Text(snapshot.data!.title!),
-            subtitle: Text(snapshot.data!.body!),
+          return Card(
+            shape: RoundedRectangleBorder(
+              side: BorderSide(color: Theme.of(context).primaryColor),
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: ListTile(
+              title: Text(snapshot.data!.title!),
+              subtitle: Text(snapshot.data!.body!),
+            ),
           );
         } else if (snapshot.hasError) {
           return Text('${snapshot.error}');

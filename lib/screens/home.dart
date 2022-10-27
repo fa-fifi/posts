@@ -33,12 +33,18 @@ class _HomeScreenState extends State<HomeScreen> {
             if (snapshot.hasData) {
               return ListView.builder(
                 itemCount: snapshot.data!.length,
-                itemBuilder: (context, index) => ListTile(
-                  onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) =>
-                          PostScreen(id: snapshot.data![index].id!))),
-                  title: Text(snapshot.data![index].title!),
-                  subtitle: Text(snapshot.data![index].body!),
+                itemBuilder: (context, index) => Card(
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(color: Theme.of(context).primaryColor),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: ListTile(
+                    onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                            PostScreen(id: snapshot.data![index].id!))),
+                    title: Text(snapshot.data![index].title!),
+                    subtitle: Text(snapshot.data![index].body!),
+                  ),
                 ),
               );
             } else if (snapshot.hasError) {

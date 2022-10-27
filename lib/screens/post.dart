@@ -37,17 +37,23 @@ class _PostScreenState extends State<PostScreen> {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 if (snapshot.hasData) {
-                  return ListTile(
-                    title: Text(snapshot.data?.title ?? 'Deleted'),
-                    subtitle: Text(snapshot.data?.body ?? 'Deleted'),
-                    trailing: ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            _future = PostRepository.deletePost(
-                                snapshot.data!.id.toString());
-                          });
-                        },
-                        child: const Text('Delete')),
+                  return Card(
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(color: Theme.of(context).primaryColor),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: ListTile(
+                      title: Text(snapshot.data?.title ?? 'Deleted'),
+                      subtitle: Text(snapshot.data?.body ?? 'Deleted'),
+                      trailing: ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              _future = PostRepository.deletePost(
+                                  snapshot.data!.id.toString());
+                            });
+                          },
+                          child: const Text('Delete')),
+                    ),
                   );
                 } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
@@ -56,18 +62,30 @@ class _PostScreenState extends State<PostScreen> {
               return const CircularProgressIndicator();
             },
           ),
-          const Divider(),
+          const Text('Comments'),
           FutureBuilder<List<Comment>>(
             future: _fetchComments,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 debugPrint(snapshot.data.toString());
                 return Expanded(
-                  child: ListView.builder(
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) => ListTile(
-                      title: Text(snapshot.data![index].name),
-                      subtitle: Text(snapshot.data![index].body),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(color: Theme.of(context).primaryColor),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: ListView.builder(
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) => Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ListTile(
+                            title: Text(snapshot.data![index].name),
+                            subtitle: Text(snapshot.data![index].body),
+                          ),
+                          const Divider(),
+                        ],
+                      ),
                     ),
                   ),
                 );
