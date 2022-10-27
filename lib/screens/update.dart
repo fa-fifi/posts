@@ -35,8 +35,8 @@ class _UpdateScreenState extends State<UpdateScreen> {
             if (snapshot.hasData) {
               return Column(
                 children: [
-                  Text(snapshot.data!.title),
-                  Text(snapshot.data!.body),
+                  Text(snapshot.data!.title!),
+                  Text(snapshot.data!.body!),
                   TextField(
                     controller: _titleController,
                     textInputAction: TextInputAction.next,
@@ -53,7 +53,8 @@ class _UpdateScreenState extends State<UpdateScreen> {
                       onPressed: () {
                         setState(() {
                           _future = PostRepository.updatePost(
-                              snapshot.data!.userId,
+                              snapshot.data!.userId!,
+                              snapshot.data!.id!,
                               _titleController.text,
                               _bodyController.text);
                         });

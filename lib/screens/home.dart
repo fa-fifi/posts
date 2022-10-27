@@ -36,9 +36,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (context, index) => ListTile(
                   onTap: () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) =>
-                          PostScreen(id: snapshot.data![index].id))),
-                  title: Text(snapshot.data![index].title),
-                  subtitle: Text(snapshot.data![index].body),
+                          PostScreen(id: snapshot.data![index].id!))),
+                  title: Text(snapshot.data![index].title!),
+                  subtitle: Text(snapshot.data![index].body!),
                 ),
               );
             } else if (snapshot.hasError) {

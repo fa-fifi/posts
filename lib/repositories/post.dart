@@ -58,8 +58,9 @@ class PostRepository {
     }
   }
 
-  static Future<Post> updatePost(int userId, String title, String body) async {
-    final uri = Uri.parse('$url/posts/$userId');
+  static Future<Post> updatePost(
+      int userId, int id, String title, String body) async {
+    final uri = Uri.parse('$url/posts/$id');
     final jsonString = jsonEncode(<String, dynamic>{
       'userId': userId,
       if (title.isNotEmpty) 'title': title,
@@ -82,6 +83,19 @@ class PostRepository {
       return Post.fromJson(jsonDecode(response.body));
     } else {
       throw Exception('Failed to update post.');
+    }
+  }
+
+  static Future<Post> deletePost(String id) async {
+    final http.Response response = await http.delete(
+      Uri.parse('$url/posts/$id'),
+      headers: header,
+    );
+
+    if (response.statusCode == 200) {
+      return Post.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to delete post.');
     }
   }
 }

@@ -62,8 +62,8 @@ class _UploadScreenState extends State<UploadScreen> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return ListTile(
-            title: Text(snapshot.data!.title),
-            subtitle: Text(snapshot.data!.body),
+            title: Text(snapshot.data!.title!),
+            subtitle: Text(snapshot.data!.body!),
           );
         } else if (snapshot.hasError) {
           return Text('${snapshot.error}');

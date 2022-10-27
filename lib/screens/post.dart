@@ -14,13 +14,13 @@ class PostScreen extends StatefulWidget {
 }
 
 class _PostScreenState extends State<PostScreen> {
-  late Future<Post> _fetchPost;
+  late Future<Post> _future;
   late Future<List<Comment>> _fetchComments;
 
   @override
   void initState() {
     super.initState();
-    _fetchPost = PostRepository.fetchPost(id: widget.id);
+    _future = PostRepository.fetchPost(id: widget.id);
     _fetchComments = PostRepository.fetchComments(postId: widget.id);
   }
 
@@ -33,17 +33,25 @@ class _PostScreenState extends State<PostScreen> {
       body: Column(
         children: [
           FutureBuilder<Post>(
-            future: _fetchPost,
+            future: _future,
             builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return ListTile(
-                  title: Text(snapshot.data!.title),
-                  subtitle: Text(
-                    snapshot.data!.body,
-                  ),
-                );
-              } else if (snapshot.hasError) {
-                return Text('${snapshot.error}');
+              if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasData) {
+                  return ListTile(
+                    title: Text(snapshot.data?.title ?? 'Deleted'),
+                    subtitle: Text(snapshot.data?.body ?? 'Deleted'),
+                    trailing: ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            _future = PostRepository.deletePost(
+                                snapshot.data!.id.toString());
+                          });
+                        },
+                        child: const Text('Delete')),
+                  );
+                } else if (snapshot.hasError) {
+                  return Text('${snapshot.error}');
+                }
               }
               return const CircularProgressIndicator();
             },
