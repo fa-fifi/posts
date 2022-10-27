@@ -13,14 +13,14 @@ class PostScreen extends StatefulWidget {
 }
 
 class _PostScreenState extends State<PostScreen> {
-  late Future<Post> _futurePost;
-  late Future<List<Comment>> _futureComments;
+  late Future<Post> _fetchPost;
+  late Future<List<Comment>> _fetchComments;
 
   @override
   void initState() {
     super.initState();
-    _futurePost = PostRepository.fetchPost(id: widget.id);
-    _futureComments = PostRepository.fetchComments(postId: widget.id);
+    _fetchPost = PostRepository.fetchPost(id: widget.id);
+    _fetchComments = PostRepository.fetchComments(postId: widget.id);
   }
 
   @override
@@ -32,7 +32,7 @@ class _PostScreenState extends State<PostScreen> {
       body: Column(
         children: [
           FutureBuilder<Post>(
-            future: _futurePost,
+            future: _fetchPost,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 return ListTile(
@@ -50,7 +50,7 @@ class _PostScreenState extends State<PostScreen> {
           ),
           const Divider(),
           FutureBuilder<List<Comment>>(
-            future: _futureComments,
+            future: _fetchComments,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 debugPrint(snapshot.data.toString());

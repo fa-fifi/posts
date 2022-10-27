@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:posts/screens/post.dart';
+import 'package:posts/screens/upload.dart';
 import '../models/post.dart';
 import '../repositories/post.dart';
 
@@ -11,12 +12,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late Future<List<Post>> _future;
+  late Future<List<Post>> _fetchPosts;
 
   @override
   void initState() {
     super.initState();
-    _future = PostRepository.fetchPosts();
+    _fetchPosts = PostRepository.fetchPosts();
   }
 
   @override
@@ -27,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Center(
         child: FutureBuilder<List<Post>>(
-          future: _future,
+          future: _fetchPosts,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               return ListView.builder(
@@ -46,6 +47,11 @@ class _HomeScreenState extends State<HomeScreen> {
             return const CircularProgressIndicator();
           },
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const UploadScreen())),
+        child: const Icon(Icons.add),
       ),
     );
   }

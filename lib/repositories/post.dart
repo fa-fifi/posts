@@ -39,4 +39,21 @@ class PostRepository {
       throw Exception('Failed to load comments.');
     }
   }
+
+  static Future<Post> createPost(int userId, String title, String body) async {
+    final response = await http.post(
+      Uri.parse('$url/posts'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+          <String, dynamic>{'userId': userId, 'title': title, 'body': body}),
+    );
+
+    if (response.statusCode == 201) {
+      return Post.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to create post.');
+    }
+  }
 }
