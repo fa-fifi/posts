@@ -1,3 +1,4 @@
+import 'package:posts/models/comment.dart';
 import 'package:posts/models/post.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -27,13 +28,15 @@ class PostRepository {
     }
   }
 
-  static Future<Post> fetchComments({required int id}) async {
-    final response = await http.get(Uri.parse('$url/posts/$id/comments'));
+  static Future<List<Comment>> fetchComments({required int postId}) async {
+    final response = await http.get(Uri.parse('$url/posts/$postId/comments'));
 
     if (response.statusCode == 200) {
-      return Post.fromJson(jsonDecode(response.body));
+      return (jsonDecode(response.body) as List)
+          .map((e) => Comment.fromJson(e))
+          .toList();
     } else {
-      throw Exception('Failed to load post $id.');
+      throw Exception('Failed to load comments.');
     }
   }
 }
